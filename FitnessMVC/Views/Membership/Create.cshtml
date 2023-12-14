@@ -1,0 +1,28 @@
+﻿@model Membership
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<head>
+    <link href="~/css/Create.css" rel="stylesheet" media="all" />
+</head>
+
+<div class="registration-form">
+    <form method="post" asp-action="Create">
+        <h1>Create a Membership Plan</h1>
+        <div class="form-group">
+            <input asp-for="memName" class="form-control item" placeholder="Membership Plan">
+            <span asp-validation-for="memName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="memLength" class="form-control item" placeholder="Length">
+            <span asp-validation-for="memLength" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-block create-account">Create Exercise</button>
+        </div>
+    </form>
+
+

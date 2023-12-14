@@ -1,0 +1,30 @@
+﻿﻿@using FitnessMVC.Data.Enum
+@model Membership
+
+<h1>Are you sure you want to delete this Membership?</h1>
+
+<head>
+    <link href="~/css/Create.css" rel="stylesheet" media="all" />
+</head>
+
+<div class="registration-form">
+    <form method="post" asp-action="Delete" enctype="multipart/form-data">
+        <h1>Delete Membership</h1>
+        <div class="form-group">
+            <input asp-for="memName" class="form-control item" placeholder="Membership Name">
+            <span asp-validation-for="memName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="memLength" class="form-control item" placeholder="memLength">
+            <span asp-validation-for="memLength" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <form action="Delete" method="post">
+                <input type="hidden" asp-for="memId" />
+                <input type="submit" value="Confirm" class="btn btn-danger float-right mt-3" />
+            </form>
+        </div>
+
+    </form>
+</div>
+

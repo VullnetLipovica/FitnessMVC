@@ -1,0 +1,43 @@
+﻿@using FitnessMVC.Data.Enum
+@using FitnessMVC.ViewModels
+@model EditGymItemViewModel
+
+
+<head>
+    <link href="~/css/Create.css" rel="stylesheet" media="all" />
+</head>
+
+<div class="registration-form">
+    <form method="post" asp-action="Edit" enctype="multipart/form-data">
+        <h1>Update Gym Item</h1>
+        <div class="form-group">
+            <input asp-for="Name" class="form-control item" placeholder="Gym Item Name">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Description" class="form-control item" placeholder="Description">
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Price" class="form-control item" placeholder="Price">
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        
+
+        @*
+        <div class="form-group">
+        <input asp-for="ImageFile" class="form-control item" placeholder="ImageFile" accept="image/*">
+        <div class="text-danger">
+        <span asp-validation-for="ImageFile"></span>
+        </div>
+        </div> *@
+
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-block create-account">Update Gym Item</button>
+        </div>
+    </form>
+</div>
+
+
+

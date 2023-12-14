@@ -1,0 +1,47 @@
+﻿@using FitnessMVC.Data.Enum
+@model Exercise
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<head>
+    <link href="~/css/Create.css" rel="stylesheet" media="all" />
+</head>
+
+<div class="registration-form">
+    <form method="post" asp-action="Create" enctype="multipart/form-data">
+        <h1>Create a Exercise</h1>
+        <div class="form-group">
+            <input asp-for="exName" class="form-control item" placeholder="Exercise Name">
+            <span asp-validation-for="exName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="exDescription" class="form-control item" placeholder="Description">
+            <span asp-validation-for="exDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <select asp-for="BodyParts" asp-items="@Html.GetEnumSelectList<BodyParts>()" class="form-control item" placeholder="Body Part"></select>
+            <span asp-validation-for="BodyParts" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <select asp-for="Difficulty" asp-items="@Html.GetEnumSelectList<Difficulty>()" class="form-control item" placeholder="Difficulty"></select>
+            <span asp-validation-for="Difficulty" class="text-danger"></span>
+        </div>
+       
+       @* 
+           <div class="form-group">
+            <input asp-for="ImageFile" class="form-control item" placeholder="ImageFile" accept="image/*">
+            <div class="text-danger">
+            <span asp-validation-for="ImageFile"></span>
+            </div>
+        </div> *@
+        
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-block create-account">Create Exercise</button>
+        </div>
+    </form>
+    </div>
+

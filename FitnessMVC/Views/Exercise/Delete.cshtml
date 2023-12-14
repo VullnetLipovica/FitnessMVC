@@ -1,0 +1,38 @@
+﻿﻿@using FitnessMVC.Data.Enum
+@model Exercise
+
+<h1>Are you sure you want to delete this Exercise?</h1>
+
+    <head>
+        <link href="~/css/Create.css" rel="stylesheet" media="all" />
+    </head>
+
+    <div class="registration-form">
+        <form method="post" asp-action="Delete" enctype="multipart/form-data">
+            <h1>Delete Exercise</h1>
+            <div class="form-group">
+                <input asp-for="exName" class="form-control item" placeholder="Exercise Name">
+                <span asp-validation-for="exName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="exDescription" class="form-control item" placeholder="Description">
+                <span asp-validation-for="exDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select asp-for="BodyParts" asp-items="@Html.GetEnumSelectList<BodyParts>()" class="form-control item" placeholder="Body Part"></select>
+                <span asp-validation-for="BodyParts" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select asp-for="Difficulty" asp-items="@Html.GetEnumSelectList<Difficulty>()" class="form-control item" placeholder="Difficulty"></select>
+                <span asp-validation-for="Difficulty" class="text-danger"></span>
+            </div>
+        <div class="form-group">
+            <form action="Delete" method="post">
+                <input type="hidden" asp-for="ExerciseId" />
+                <input type="submit" value="Confirm" class="btn btn-danger float-right mt-3" />
+            </form>
+        </div>
+
+        </form>
+    </div>
+

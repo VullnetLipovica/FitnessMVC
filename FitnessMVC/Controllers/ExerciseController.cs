@@ -19,10 +19,48 @@ namespace FitnessMVC.Controllers
             _exerciseRepository = exerciseRepository;
             _hostEnvironment = hostEnvironment;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string sortOrder,int pageNumber, string currentFilter)
         {
             IEnumerable<Exercise> exercises = await _exerciseRepository.GetAll();
-            return View(exercises);
+            var exercises1 = _exerciseRepository.GetAllNew();
+          
+            //Search
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                exercises = exercises.Where(n => n.exName.ToLower().Trim().Contains(searchString.ToLower().Trim()));
+                exercises1 = exercises1.Where(n => n.exName.ToLower().Trim().Contains(searchString.ToLower().Trim()));
+            }
+
+           
+            //Sort
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    exercises = exercises.OrderByDescending(e => e.exName).ToList();
+                    exercises1 = exercises1.OrderByDescending(e => e.exName);
+                    break;
+                case "difficulty_asc":
+                    exercises = exercises.OrderBy(e => e.Difficulty).ToList();
+                    exercises1 = exercises1.OrderBy(e => e.Difficulty);
+                    break;
+                case "difficulty_desc":
+                    exercises = exercises.OrderByDescending(e => e.Difficulty).ToList();
+                    exercises1 = exercises1.OrderByDescending(e => e.Difficulty);
+                    break;
+
+                default:
+                    exercises = exercises.OrderBy(e => e.exName).ToList();
+                    exercises1 = exercises1.OrderBy(e => e.exName);
+                    break;
+            }
+
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
+            int pageSize = 5;
+            return View(await PaginatedList<Exercise>.CreateAsync(exercises1, pageNumber, pageSize));
         }
 
         public async Task<IActionResult> Details(int id)

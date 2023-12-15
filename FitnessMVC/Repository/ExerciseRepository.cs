@@ -56,6 +56,11 @@ namespace FitnessMVC.Repository
 
         }
 
+        public IQueryable<Exercise> GetAllNew()
+        {
+            return _context.Exercises.AsQueryable();
+        }
+
         public async Task<Exercise> GetByIdAsync(int id)
         {
             return await _context.Exercises.FirstOrDefaultAsync(i => i.ExerciseId == id);

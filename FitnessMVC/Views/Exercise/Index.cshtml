@@ -90,8 +90,10 @@
                     <h6 class="card-subtitle mb-2 text-muted">Group : @item.BodyParts</h6>
                     <p class="card-text">@item.exDescription</p>
                     <a asp-controller="Exercise" asp-action="Details" asp-route-id="@item.ExerciseId"class="btn foreach-btn mr-2"><i class="fas fa-link"></i> View</a>
+                    @if(User.IsInRole("Admin")){
                     <a asp-controller="Exercise" asp-action="Edit" asp-route-id="@item.ExerciseId" class="btn foreach-btn mr-2"><i class="fas fa-link"></i> Edit</a>
                     <a asp-controller="Exercise" asp-action="Delete" asp-route-id="@item.ExerciseId" class="btn foreach-btn mr-2"><i class="fas fa-link"></i> Delete</a>
+                    }
                 </div>
             </div>
             </div>

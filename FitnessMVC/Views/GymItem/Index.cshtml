@@ -35,10 +35,13 @@
                     <div class="btn-group">
                         <a type="button" asp-controller="GymItem" asp-action="Details" asp-route-id="@item.GymItemId"
                            class="btn btn-sm btn-outline-secondary">View</a>
+                        @if (User.IsInRole("Admin"))
+                        {
                         <a type="button" asp-controller="GymItem" asp-action="Edit" asp-route-id="@item.GymItemId"
                            class="btn btn-sm btn-outline-secondary">Edit</a>
                         <a type="button" asp-controller="GymItem" asp-action="Delete" asp-route-id="@item.GymItemId"
                            class="btn btn-sm btn-outline-secondary">Delete</a>
+                        }
                     </div>
                 </div>
             </div>

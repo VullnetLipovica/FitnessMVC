@@ -4,9 +4,11 @@ using FitnessMVC.Data;
 using FitnessMVC.Interfaces;
 using FitnessMVC.Models;
 using FitnessMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitnessMVC.Controllers
 {
+    [Authorize(Roles = "User")]
     public class ExerciseController : Controller
     {
         
@@ -19,7 +21,9 @@ namespace FitnessMVC.Controllers
             _exerciseRepository = exerciseRepository;
             _hostEnvironment = hostEnvironment;
         }
-        public async Task<IActionResult> Index(string searchString, string sortOrder,int pageNumber, string currentFilter)
+
+		
+		public async Task<IActionResult> Index(string searchString, string sortOrder,int pageNumber, string currentFilter)
         {
             IEnumerable<Exercise> exercises = await _exerciseRepository.GetAll();
             var exercises1 = _exerciseRepository.GetAllNew();
@@ -62,18 +66,20 @@ namespace FitnessMVC.Controllers
             int pageSize = 5;
             return View(await PaginatedList<Exercise>.CreateAsync(exercises1, pageNumber, pageSize));
         }
-
-        public async Task<IActionResult> Details(int id)
+		
+		public async Task<IActionResult> Details(int id)
         {
             Exercise exercise = await _exerciseRepository.GetByIdAsync(id);
             return View(exercise);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
 
         public async Task<IActionResult> Create(Exercise exercise)
@@ -86,6 +92,8 @@ namespace FitnessMVC.Controllers
             _exerciseRepository.Add(exercise);
             return RedirectToAction("Index");
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -101,6 +109,7 @@ namespace FitnessMVC.Controllers
             return View(exerciseVM);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditExerciseViewModel ExerciseVM)
         {
@@ -131,7 +140,7 @@ namespace FitnessMVC.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -140,6 +149,7 @@ namespace FitnessMVC.Controllers
             return View(exerciseDetails);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteExercise(int id)
         {

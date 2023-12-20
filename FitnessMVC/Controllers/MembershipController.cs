@@ -5,10 +5,12 @@ using FitnessMVC.Interfaces;
 using FitnessMVC.Models;
 using FitnessMVC.Repository;
 using FitnessMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitnessMVC.Controllers
 {
-    public class MembershipController : Controller
+	[Authorize(Roles = "User")]
+	public class MembershipController : Controller
     {
         private readonly IMembershipRepository _membershipRepository;
 
@@ -28,12 +30,15 @@ namespace FitnessMVC.Controllers
             return View(membership);
         }
 
-        public IActionResult Create()
+		[Authorize(Roles = "Admin")]
+
+		public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost]
+		[Authorize(Roles = "Admin")]
+		[HttpPost]
 
         public async Task<IActionResult> Create(Membership membership)
         {
@@ -45,7 +50,8 @@ namespace FitnessMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+		[Authorize(Roles = "Admin")]
+		[HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var membership = await _membershipRepository.GetByIdAsync(id);
@@ -57,8 +63,9 @@ namespace FitnessMVC.Controllers
             };
             return View(membershipVM);
         }
-
-        [HttpPost]
+		
+        [Authorize(Roles = "Admin")]
+		[HttpPost]
         public async Task<IActionResult> Edit(int id, EditMembershipViewModel membershipVM)
         {
             if (!ModelState.IsValid)
@@ -86,7 +93,8 @@ namespace FitnessMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+		[Authorize(Roles = "Admin")]
+		[HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var membershipDetails = await _membershipRepository.GetByIdAsync(id);
@@ -94,7 +102,8 @@ namespace FitnessMVC.Controllers
             return View(membershipDetails);
         }
 
-        [HttpPost, ActionName("Delete")]
+		[Authorize(Roles = "Admin")]
+		[HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteExercise(int id)
         {
             var membershipDetails = await _membershipRepository.GetByIdAsync(id);

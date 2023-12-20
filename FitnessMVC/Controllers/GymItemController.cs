@@ -5,10 +5,12 @@ using FitnessMVC.Interfaces;
 using FitnessMVC.Models;
 using FitnessMVC.Repository;
 using FitnessMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FitnessMVC.Controllers
 {
-    public class GymItemController : Controller
+	[Authorize(Roles = "User")]
+	public class GymItemController : Controller
     {
         private readonly IGymItemRepository _gymItemRepository;
         public GymItemController(IGymItemRepository gymItemRepository)
@@ -27,12 +29,15 @@ namespace FitnessMVC.Controllers
             GymItem gymItems = await _gymItemRepository.GetByIdAsync(id);
             return View(gymItems);
         }
-        public IActionResult Create()
+
+		[Authorize(Roles = "Admin")]
+		public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost]
+		[Authorize(Roles = "Admin")]
+		[HttpPost]
         public async Task<IActionResult> Create(GymItem gymItem)
         {
             if (!ModelState.IsValid)
@@ -43,6 +48,7 @@ namespace FitnessMVC.Controllers
             return RedirectToAction("Index");
         }
 
+		[Authorize(Roles = "Admin")]
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
@@ -58,6 +64,7 @@ namespace FitnessMVC.Controllers
 			return View(gymItemVM);
 		}
 
+		[Authorize(Roles = "Admin")]
 		[HttpPost]
 		public async Task<IActionResult> Edit(int id, EditGymItemViewModel GymItemVM)
 		{
@@ -88,7 +95,8 @@ namespace FitnessMVC.Controllers
 			return RedirectToAction("Index");
 		}
 
-        [HttpGet]
+		[Authorize(Roles = "Admin")]
+		[HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var GymItemDetails = await _gymItemRepository.GetByIdAsync(id);
@@ -96,7 +104,8 @@ namespace FitnessMVC.Controllers
             return View(GymItemDetails);
         }
 
-        [HttpPost, ActionName("Delete")]
+		[Authorize(Roles = "Admin")]
+		[HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteExercise(int id)
         {
             var GymItemDetails = await _gymItemRepository.GetByIdAsync(id);

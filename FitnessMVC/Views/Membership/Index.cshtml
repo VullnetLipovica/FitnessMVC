@@ -14,7 +14,16 @@
 <section class="light">
 	<div class="container py-2">
 		<div class="h1 text-center text-dark" id="pageHeaderTitle">My Cards Light</div>
-            @foreach (var item in Model)
+		@if (User.IsInRole("Admin"))
+		{
+			<div class="col-md-6">
+				<button>
+					<a class="nav-link text-dark" asp-area="" asp-controller="Membership" asp-action="Create">Create Membership</a>
+				</button>
+			</div>
+		}
+		<br/>
+		@foreach (var item in Model)
             {
 		<article class="postcard light blue">
 			<a class="postcard__img_link" href="#">
@@ -46,6 +55,7 @@
 					</ul>
 			</div>
 		</article>
+			
         }
 	</div>
 </section>

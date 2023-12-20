@@ -52,9 +52,18 @@
     </form>
 </div>
    
-<div class="col-md-6">
+<div class="col-6 col-md-4 align-self-center">
         <a asp-action="Index" class="text-dark">Back To Full List</a>
 </div>
+<br/>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col-md-6">
+            <button >
+                <a class="nav-link text-dark" asp-area="" asp-controller="Exercise" asp-action="Create">Create Exercise</a>
+            </button>
+        </div>
+    }
 
 
 </div>

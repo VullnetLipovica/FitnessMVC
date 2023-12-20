@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FitnessMVC.Controllers
 {
-	[Authorize(Roles = "User")]
+	[Authorize(Roles = "User,Admin")]
 	public class MembershipController : Controller
     {
         private readonly IMembershipRepository _membershipRepository;

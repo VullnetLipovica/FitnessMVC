@@ -14,6 +14,16 @@
 
 <div class="container mt-5">
     <div class="row justify-content-center">
+       <br/>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="col-md-4">
+                <button>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="GymItem" asp-action="Create"> Create GymItem</a>
+                </button>
+            </div>
+        }
+        <br/>
         @foreach (var item in Model)
         {
             <div class="col-md-4">

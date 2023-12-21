@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GymItem>
+﻿@model  PaginatedList<GymItem>
 
 <style>
     .card {
@@ -11,20 +11,47 @@
     }
 
 </style>
+<div class="row">
+    <div class="col-md-6">
+        <form class="d-flex" asp-action="Index" asp-controller="GymItem">
+            <input name="searchString" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" />
+            <button class="btn btn-dark small" type="submit">Search by name</button>
+        </form>
+    </div>
+
+    <div class="col-6 col-md-4 align-self-center">
+        <a asp-action="Index" class="text-dark">Back To Full List</a>
+    </div>
+    <br />
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col-md-4">
+            <button>
+                <a class="nav-link text-dark" asp-area="" asp-controller="GymItem" asp-action="Create"> Create GymItem</a>
+            </button>
+        </div>
+    }
+    <form asp-action="Index" method="get">
+        <label for="sortOrder">Sort By:</label>
+        <select name="sortOrder" id="sortOrder" class="form-select">
+            <option value="name_asc">Name (Ascending)</option>
+            <option value="name_desc">Name (Descending)</option>
+            <option value="price_asc">Price (Ascending)</option>
+            <option value="price_desc">Price (Descending)</option>
+        </select><br />
+
+        <button type="submit" class="btn btn-dark">Sort</button>
+    </form>
+
+
+</div>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
        <br/>
-        @if (User.IsInRole("Admin"))
-        {
-            <div class="col-md-4">
-                <button>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="GymItem" asp-action="Create"> Create GymItem</a>
-                </button>
-            </div>
-        }
+        
         <br/>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Items)
         {
             <div class="col-md-4">
                 <div class="card p-3 bg-white ">
@@ -56,5 +83,58 @@
                 </div>
             </div>
         }
+    </div>
+</div>
+
+@*Paging*@
+<div class="row">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6">
+        <nav>
+            <ul class="pagination justify-content-end">
+                <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                    <a class="page-link text-black" asp-route-pageNumber="1"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        <span>First</span>
+                    </a>
+                </li>
+
+                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                    <a class="page-link text-black" asp-route-pageNumber="@(Model.PageIndex - 1)"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        <span>Previous</span>
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                        <a class="page-link text-black" asp-route-pageNumber="@i"
+                           asp-route-sortOrder="@ViewData["CurrentSort"]"
+                           asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                    <a class="page-link text-black" asp-route-pageNumber="@(Model.PageIndex + 1)"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        <span>Next</span>
+                    </a>
+                </li>
+                <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link text-black" asp-route-pageNumber="@Model.TotalPages"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                        <span>Last</span>
+                    </a>
+                </li>
+
+
+            </ul>
+        </nav>
     </div>
 </div>

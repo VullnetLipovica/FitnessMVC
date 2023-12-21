@@ -5,6 +5,9 @@ namespace FitnessMVC.Interfaces
     public interface IGymItemRepository
     {
         Task<IEnumerable<GymItem>> GetAll();
+
+        IQueryable<GymItem> GetAllNew();
+
         Task<GymItem> GetByIdAsync(int id);
 
 		Task<GymItem> GetByIdAsyncNoTracking(int id);

@@ -18,11 +18,50 @@ namespace FitnessMVC.Controllers
 
             _gymItemRepository = gymItemRepository;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string sortOrder, int pageNumber, string currentFilter)
         {
             IEnumerable<GymItem> gymItems = await _gymItemRepository.GetAll();
-            return View(gymItems);
+            var gymitems1 = _gymItemRepository.GetAllNew();
+
+            //Search
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                gymItems = gymItems.Where(n => n.Name.ToLower().Trim().Contains(searchString.ToLower().Trim()));
+                gymitems1 = gymitems1.Where(n => n.Name.ToLower().Trim().Contains(searchString.ToLower().Trim()));
+            }
+
+
+            //Sort
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    gymItems = gymItems.OrderByDescending(e => e.Name).ToList();
+                    gymitems1 = gymitems1.OrderByDescending(e => e.Name);
+                    break;
+                case "price_asc":
+                    gymItems = gymItems.OrderBy(e => e.Price).ToList();
+                    gymitems1 = gymitems1.OrderBy(e => e.Price);
+                    break;
+                case "price_desc":
+                    gymItems = gymItems.OrderByDescending(e => e.Price).ToList();
+                    gymitems1 = gymitems1.OrderByDescending(e => e.Price);
+                    break;
+
+                default:
+                    gymItems = gymItems.OrderBy(e => e.Name).ToList();
+                    gymitems1 = gymitems1.OrderBy(e => e.Name);
+                    break;
+            }
+
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
+            int pageSize = 5;
+            return View(await PaginatedList<GymItem>.CreateAsync(gymitems1, pageNumber, pageSize));
         }
+
 
         public async Task<IActionResult> Details(int id)
         {

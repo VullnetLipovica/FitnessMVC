@@ -31,15 +31,22 @@ namespace FitnessMVC.Repository
             return await _context.GymItems.ToListAsync();
         }
 
+        public IQueryable<GymItem> GetAllNew()
+        {
+            return _context.GymItems.AsQueryable();
+        }
+
         public async Task<GymItem> GetByIdAsync(int id)
         {
             return await _context.GymItems.FirstOrDefaultAsync(i => i.GymItemId == id);
         }
 
+
 		public async Task<GymItem> GetByIdAsyncNoTracking(int id)
 		{
 			return await _context.GymItems.AsNoTracking().FirstOrDefaultAsync(i => i.GymItemId == id);
 		}
+
 
 		public bool Save()
         {

@@ -18,10 +18,48 @@ namespace FitnessMVC.Controllers
         {
             _membershipRepository = membershipRepository;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, string sortOrder, int pageNumber, string currentFilter)
         {
-            IEnumerable<Membership> memberships= await _membershipRepository.GetAll();
-            return View(memberships);
+            IEnumerable<Membership> memberships = await _membershipRepository.GetAll();
+            var memberships1 = _membershipRepository.GetAllNew();
+
+            //Search
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                memberships = memberships.Where(n => n.memName.ToLower().Trim().Contains(searchString.ToLower().Trim()));
+                memberships1 = memberships1.Where(n => n.memName.ToLower().Trim().Contains(searchString.ToLower().Trim()));
+            }
+
+
+            //Sort
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    memberships = memberships.OrderByDescending(e => e.memName).ToList();
+                    memberships1 = memberships1.OrderByDescending(e => e.memName);
+                    break;
+                case "length_asc":
+                    memberships = memberships.OrderBy(e => e.memLength).ToList();
+                    memberships1 = memberships1.OrderBy(e => e.memLength);
+                    break;
+                case "length_desc":
+                    memberships = memberships.OrderByDescending(e => e.memLength).ToList();
+                    memberships1 = memberships1.OrderByDescending(e => e.memLength);
+                    break;
+
+                default:
+                    memberships = memberships.OrderBy(e => e.memName).ToList();
+                    memberships1 = memberships1.OrderBy(e => e.memName);
+                    break;
+            }
+
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
+            int pageSize = 5;
+            return View(await PaginatedList<Membership>.CreateAsync(memberships1, pageNumber, pageSize));
         }
 
         public async Task<IActionResult> Details(int id)

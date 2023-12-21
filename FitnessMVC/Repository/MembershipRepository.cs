@@ -30,6 +30,10 @@ namespace FitnessMVC.Repository
         {
             return await _context.Memberships.ToListAsync();
         }
+        public IQueryable<Membership> GetAllNew()
+        {
+            return _context.Memberships.AsQueryable();
+        }
 
         public async Task<Membership> GetByIdAsync(int id)
         {

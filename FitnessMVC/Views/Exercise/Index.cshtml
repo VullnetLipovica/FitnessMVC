@@ -7,16 +7,17 @@
 }
 <style>
     :root {
-        --gradient: linear-gradient(to left top, #DD2476 10%, #FF512F 90%) !important;
+        --gradient: linear-gradient(to left top, darkolivegreen 10%, darkolivegreen 90%) !important;
     }
 
     body {
-        background: white !important;
+        background-color: #222;
+       
     }
 
     .card {
-        background: #222;
-        border: 1px solid #222;
+        background: #1d1e22;
+        border: 1px solid black;
         color: rgba(250, 250, 250, 0.8);
         margin-bottom: 2rem;
     }
@@ -53,7 +54,7 @@
 </div>
    
 <div class="col-6 col-md-4 align-self-center">
-        <a asp-action="Index" class="text-dark">Back To Full List</a>
+        <a asp-action="Index" class="text-light">Back To Full List</a>
 </div>
 <br/>
     @if (User.IsInRole("Admin"))

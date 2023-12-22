@@ -13,10 +13,15 @@ namespace FitnessMVC.Controllers
 	public class GymItemController : Controller
     {
         private readonly IGymItemRepository _gymItemRepository;
-        public GymItemController(IGymItemRepository gymItemRepository)
+        
+        private readonly IWebHostEnvironment _webEnvironment;
+        ApplicationDbContext _mydbcontext;
+        public GymItemController(IGymItemRepository gymItemRepository, ApplicationDbContext mydbcontext, IWebHostEnvironment webHostEnvironment)
         {
 
             _gymItemRepository = gymItemRepository;
+            _webEnvironment = webHostEnvironment;
+            _mydbcontext = mydbcontext;
         }
         public async Task<IActionResult> Index(string searchString, string sortOrder, int pageNumber, string currentFilter)
         {
@@ -77,13 +82,26 @@ namespace FitnessMVC.Controllers
 
 		[Authorize(Roles = "Admin")]
 		[HttpPost]
-        public async Task<IActionResult> Create(GymItem gymItem)
+        public async Task<IActionResult> Create(GymItemViewModel gymItem)
         {
-            if (!ModelState.IsValid)
+            String filename = "";
+            if (gymItem.photo != null)
             {
-                return View(gymItem);
+                string uploadfolder = Path.Combine(_webEnvironment.WebRootPath, "images");
+                filename = Guid.NewGuid().ToString() + "_" + gymItem.photo.FileName;
+                string filepath = Path.Combine(uploadfolder, filename);
+                gymItem.photo.CopyTo(new FileStream(filepath, FileMode.Create));
             }
-            _gymItemRepository.Add(gymItem);
+            GymItem g = new GymItem
+            {
+                Name = gymItem.Name,
+                Description = gymItem.Description,
+                Price = gymItem.Price,
+                Image = filename
+            };
+            _mydbcontext.GymItems.Add(g);
+            _mydbcontext.SaveChanges();
+            ViewBag.succes = "Record Added";
             return RedirectToAction("Index");
         }
 
@@ -119,17 +137,34 @@ namespace FitnessMVC.Controllers
 			{
 				return View("Error");
 			}
+            // Update existing properties
+            gymItem.Name = GymItemVM.Name;
+            gymItem.Description = GymItemVM.Description;
+            gymItem.Price = GymItemVM.Price;
 
-			var newGymItem = new GymItem
-			{
-				GymItemId = id,
-				Name = GymItemVM.Name,
-				Description = GymItemVM.Description,
-				Price = GymItemVM.Price,
-				
-			};
+            if (GymItemVM.NewImage != null)
+            {
+                // Delete the existing image if it exists
+                if (!string.IsNullOrEmpty(gymItem.Image))
+                {
+                    string existingImagePath = Path.Combine(_webEnvironment.WebRootPath, "images", gymItem.Image);
+                    if (System.IO.File.Exists(existingImagePath))
+                    {
+                        System.IO.File.Delete(existingImagePath);
+                    }
+                }
 
-			_gymItemRepository.Update(newGymItem);
+                // Save the new image
+                string newImageFilename = Guid.NewGuid().ToString() + "_" + GymItemVM.NewImage.FileName;
+                string newImagePath = Path.Combine(_webEnvironment.WebRootPath, "images", newImageFilename);
+                GymItemVM.NewImage.CopyTo(new FileStream(newImagePath, FileMode.Create));
+
+                // Update the exercise with the new image filename
+                gymItem.Image = newImageFilename;
+            }
+
+
+            _gymItemRepository.Update(gymItem);
 
 			return RedirectToAction("Index");
 		}

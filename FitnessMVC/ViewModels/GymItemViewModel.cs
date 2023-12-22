@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
-namespace FitnessMVC.Models
+namespace FitnessMVC.ViewModels
 {
-    public class GymItem
+    public class GymItemViewModel
     {
         [Key]
         public int GymItemId { get; set; }
@@ -14,7 +13,6 @@ namespace FitnessMVC.Models
 
         public int Price { get; set; }
 
-        public string Image { get; set; }
-
+        public IFormFile photo { get; set; }
     }
 }

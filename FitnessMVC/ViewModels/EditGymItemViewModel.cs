@@ -9,5 +9,7 @@
 		public string Description { get; set; }
 
 		public int Price { get; set; }
-	}
+
+        public IFormFile? NewImage { get; set; }
+    }
 }

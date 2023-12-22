@@ -1,12 +1,9 @@
-﻿using System.ComponentModel;
+﻿using FitnessMVC.Data.Enum;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
-using FitnessMVC.Data.Enum;
 
-namespace FitnessMVC.Models
+namespace FitnessMVC.ViewModels
 {
-    public class Exercise
+    public class ExerciseViewModel
     {
         [Key]
         public int ExerciseId { get; set; }
@@ -20,7 +17,6 @@ namespace FitnessMVC.Models
 
         public Difficulty Difficulty { get; set; }
 
-        public string Image {  get; set; }
-
+        public IFormFile photo { get; set; }
     }
 }

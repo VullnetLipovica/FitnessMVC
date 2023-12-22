@@ -91,9 +91,9 @@
             {
             <div class="col-md-4">
             <div class="card" style="width: 18rem;">
-                    <img src="~/img/Pushups.jpg" class="card-img-top" alt="...">
                     
-                @*<img src="@("~/image/"+item.ImageName)" asp-append-version="true" class="card-img-top" alt="..." width="250px" height="250px">*@
+                    <img src="../images/@Html.DisplayFor(modelItem => item.Image)" style="width:285px; height:300px;" class="card-img-top" />
+                
                
                 <div class="card-body">
                     <h5 class="card-title">@item.exName</h5>

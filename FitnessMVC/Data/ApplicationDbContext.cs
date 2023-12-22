@@ -17,5 +17,7 @@ namespace FitnessMVC.Data
         public DbSet<GymItem> GymItems { get; set; }
 
         public DbSet<Membership> Memberships { get; set; }
+
+        public DbSet<Protein> Proteins { get; set; }
     }
 }

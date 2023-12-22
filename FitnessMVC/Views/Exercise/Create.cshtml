@@ -1,5 +1,6 @@
 ﻿@using FitnessMVC.Data.Enum
-@model Exercise
+@using FitnessMVC.ViewModels
+@model ExerciseViewModel
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -28,6 +29,11 @@
         <div class="form-group">
             <select asp-for="Difficulty" asp-items="@Html.GetEnumSelectList<Difficulty>()" class="form-control item" placeholder="Difficulty"></select>
             <span asp-validation-for="Difficulty" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="photo" class="control-label text-white"></label>
+            <input asp-for="photo" class="form-control" />
+            <span asp-validation-for="photo" class="text-danger"></span>
         </div>
        
        @* 

@@ -13,13 +13,15 @@ namespace FitnessMVC.Controllers
     {
         
         private readonly IExerciseRepository _exerciseRepository;
-        private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IWebHostEnvironment _webEnvironment;
+        ApplicationDbContext _mydbcontext;
 
-        public ExerciseController(IExerciseRepository exerciseRepository,IWebHostEnvironment hostEnvironment)
+        public ExerciseController(IExerciseRepository exerciseRepository,IWebHostEnvironment webHostEnvironment, ApplicationDbContext mydbcontext)
         {
             
             _exerciseRepository = exerciseRepository;
-            _hostEnvironment = hostEnvironment;
+            _webEnvironment = webHostEnvironment;
+            _mydbcontext = mydbcontext;
         }
 
 		
@@ -82,14 +84,29 @@ namespace FitnessMVC.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
 
-        public async Task<IActionResult> Create(Exercise exercise)
+        public async Task<IActionResult> Create(ExerciseViewModel exercise)
         {
-            if (!ModelState.IsValid)
+            String filename = "";
+            if (exercise.photo != null)
             {
-                return View(exercise);
+                string uploadfolder = Path.Combine(_webEnvironment.WebRootPath, "images");
+                filename = Guid.NewGuid().ToString() + "_" + exercise.photo.FileName;
+                string filepath = Path.Combine(uploadfolder, filename);
+                exercise.photo.CopyTo(new FileStream(filepath, FileMode.Create));
             }
-         
-            _exerciseRepository.Add(exercise);
+
+            Exercise e = new Exercise
+            {
+                exName = exercise.exName,
+                exDescription = exercise.exDescription,
+                Difficulty = exercise.Difficulty,
+                BodyParts = exercise.BodyParts,
+                Image = filename
+            };
+
+            _mydbcontext.Exercises.Add(e);
+            _mydbcontext.SaveChanges();
+            ViewBag.succes = "Record Added";
             return RedirectToAction("Index");
         }
 
@@ -104,7 +121,7 @@ namespace FitnessMVC.Controllers
                 exName = exercise.exName,
                 exDescription = exercise.exDescription,
                 BodyParts = exercise.BodyParts,
-                Difficulty = exercise.Difficulty
+                Difficulty = exercise.Difficulty,
             };
             return View(exerciseVM);
         }
@@ -115,7 +132,7 @@ namespace FitnessMVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to edit club");
+                ModelState.AddModelError("", "Failed to edit exercise");
                 return View("Edit", ExerciseVM);
             }
 
@@ -126,16 +143,35 @@ namespace FitnessMVC.Controllers
                 return View("Error");
             }
 
-            var newExercise = new Exercise
-            {
-                ExerciseId = id,
-                exName = ExerciseVM.exName,
-                exDescription = ExerciseVM.exDescription,
-                BodyParts = ExerciseVM.BodyParts,
-                Difficulty = ExerciseVM.Difficulty
-            };
+            // Update existing properties
+            exercise.exName = ExerciseVM.exName;
+            exercise.exDescription = ExerciseVM.exDescription;
+            exercise.BodyParts = ExerciseVM.BodyParts;
+            exercise.Difficulty = ExerciseVM.Difficulty;
 
-            _exerciseRepository.Update(newExercise);
+            // Handle the new image
+            if (ExerciseVM.NewImage != null)
+            {
+                // Delete the existing image if it exists
+                if (!string.IsNullOrEmpty(exercise.Image))
+                {
+                    string existingImagePath = Path.Combine(_webEnvironment.WebRootPath, "images", exercise.Image);
+                    if (System.IO.File.Exists(existingImagePath))
+                    {
+                        System.IO.File.Delete(existingImagePath);
+                    }
+                }
+
+                // Save the new image
+                string newImageFilename = Guid.NewGuid().ToString() + "_" + ExerciseVM.NewImage.FileName;
+                string newImagePath = Path.Combine(_webEnvironment.WebRootPath, "images", newImageFilename);
+                ExerciseVM.NewImage.CopyTo(new FileStream(newImagePath, FileMode.Create));
+
+                // Update the exercise with the new image filename
+                exercise.Image = newImageFilename;
+            }
+
+            _exerciseRepository.Update(exercise);
 
             return RedirectToAction("Index");
         }

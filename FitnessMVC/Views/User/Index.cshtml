@@ -1,0 +1,44 @@
+﻿@using FitnessMVC.Data
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<ApplicationUser>
+
+@{
+    var userManager = Context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
+}
+
+<h2 style="color: white;">User List</h2>
+
+<button onclick="location.href='@Url.Action("Create", "User")'" class="btn btn-light">Create User</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="color: white;">Email</th>
+            <th style="color: white;">Name</th>
+            <th style="color: white;">Roles</th>
+            <th style="color: white;">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td style="color: white;">@user.Email</td>
+                <td style="color: white;">@user.Name</td>
+                <td>
+                    @foreach (var role in await userManager.GetRolesAsync(user))
+                    {
+                        <span class="badge badge-primary">@role</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@user.Id" style="color: white;">Edit</a> |
+                    <form asp-action="Delete" method="post" onsubmit="return confirm('Are you sure you want to delete this user?')">
+                        <input type="hidden" name="id" value="@user.Id" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

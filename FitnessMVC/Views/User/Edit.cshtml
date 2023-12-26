@@ -1,0 +1,48 @@
+﻿@using FitnessMVC.ViewModels
+@model EditUserViewModel
+
+<h2 style="color: white;">Edit User</h2>
+
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label style="color: white;">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label style="color: white;">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label style="color: white;">Role</label>
+        <select asp-for="UserRole" class="form-control" id="userRoleSelect">
+            <option value="">Select Role</option>
+            @if (Model.AllRoles != null)
+            {
+                foreach (var role in Model.AllRoles)
+                {
+                    <option value="@role.Name">@role.Name</option>
+                }
+            }
+        </select>
+        <input type="hidden" asp-for="UserRole" id="hiddenUserRole" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+@section Scripts {
+    <script>
+        // Set the selected value in the dropdown using JavaScript
+        var userRole = '@Model.UserRole';
+        if (userRole) {
+            document.getElementById('userRoleSelect').value = userRole;
+            document.getElementById('hiddenUserRole').value = userRole;
+        }
+    </script>
+}

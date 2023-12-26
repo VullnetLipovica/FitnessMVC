@@ -1,0 +1,12 @@
+﻿@using FitnessMVC.Data
+@model ApplicationUser
+
+<h2 style="color: white;">Delete User</h2>
+
+<p style="color: white;">Are you sure you want to delete user <strong>@Model.Email</strong>?</p>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" style="color: white;">Cancel</a>
+</form>

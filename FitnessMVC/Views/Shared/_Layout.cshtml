@@ -25,6 +25,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">About Us</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                        </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
@@ -35,7 +38,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="" asp-controller="Membership" asp-action="Index">Membership</a>
-                            </li>
+                            </li>                           
                         }
                     </ul>
                     <partial name="_LoginPartial" />
@@ -49,11 +52,16 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted" style="padding: 20px 0; text-align: center; font-size: 14px;">
         <div class="container">
-            &copy; 2023 - Fitness App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <p>&copy; 2023 Fitness App. All rights reserved.</p>
+            <p>
+                <a href="#" style="color: #343a40;">Terms of Service</a> |
+                <a asp-area="" asp-controller="Home" asp-action="Privacy" style="color: #343a40;">Privacy Policy</a>
+            </p>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

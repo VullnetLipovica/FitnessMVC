@@ -1,0 +1,52 @@
+﻿@using FitnessMVC.Data
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<FitnessMVC.Models.FeedBack>
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-white">Index</h1>
+
+<p>
+    <a asp-action="AddFeedBack" class="text-white">Create New</a>
+</p>
+<table class="table text-white">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+               Actions
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.id" class="text-white">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.id" class="text-white">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

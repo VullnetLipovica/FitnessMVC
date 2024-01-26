@@ -19,5 +19,7 @@ namespace FitnessMVC.Data
         public DbSet<Membership> Memberships { get; set; }
 
         public DbSet<Protein> Proteins { get; set; }
+
+        public DbSet<FeedBack> FeedBacks { get; set; }
     }
 }

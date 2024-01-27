@@ -11,13 +11,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+   
 </head>
-<body style="font-family: 'Arial', sans-serif; text-align: center;">
+<body style="font-family: 'Arial', sans-serif; text-align: center; min-height: 100vh; display: flex; flex-direction: column;">
 
     <h1 style="color: white; margin-top: 40px;">@ViewData["Title"]</h1>
 
     <p style="color: white; font-size: 18px; line-height: 1.6; margin-bottom: 30px;">
-        Have questions or feedback? We'd love to hear from you! Reach out to us using the contact information below or fill out the form, and we'll get back to you as soon as possible.
+        Have questions or feedback? We'd love to hear from you! Reach out to us using the contact information below or find out more about our gym.
     </p>
 
     <div class="container" style="color: white">
@@ -27,9 +28,38 @@
         <div>
             <strong style="color: white">Phone:</strong> +1 (123) 456-7890
         </div>
+        <div>
+            <strong style="color: white">Address:</strong> 123 Fitness Street, Kosovo, Prishtina, 14000
+        </div>
+        <div>
+            <strong style="color: white">Business Hours:</strong> Monday-Friday: 6:00 AM - 9:00 PM, Saturday-Sunday: 8:00 AM - 5:00 PM
+        </div>
     </div>
 
-   
+    <div class="container" style="color: white; margin-top: 30px;">
+        <p>
+            Our gym is dedicated to promoting health and fitness in the community. With state-of-the-art equipment and experienced trainers, we aim to provide a welcoming environment for all fitness enthusiasts.
+        </p>
+
+        <p>
+            Whether you're a beginner or a seasoned athlete, we have programs tailored to meet your fitness goals. Join us today and embark on a journey to a healthier and happier lifestyle.
+        </p>
+
+        <p>
+            Follow us on social media for the latest updates and fitness tips!
+        </p>
+        <div>
+            <a href="#" style="color: white; text-decoration: none; margin-right: 20px;"><i class="fab fa-facebook-f">Facebook</i></a>
+            <a href="#" style="color: white; text-decoration: none; margin-right: 20px;"><i class="fab fa-twitter">Twitter</i></a>
+            <a href="#" style="color: white; text-decoration: none;"><i class="fab fa-instagram">Instagram</i></a>
+        </div>
+        <!-- Placeholder image -->
+        <img src="/images/location.jpg" alt="Map Image" style="width: 100%; max-width: 600px; margin: 20px auto;">
+
+        <!-- Google Maps link (replace with your actual map link) -->
+        <p>Explore our location on <a href="https://www.google.com/maps/place/Your+Gym+Location" target="_blank" style="color: #ffffff;">Google Maps</a>.</p>
+
+     
 
 </body>
 </html>

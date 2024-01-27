@@ -8,15 +8,12 @@ namespace FitnessMVC.Models
         [Key]
         public int memId { get; set; }
 
+        [Required]
+        [StringLength(255)]
         public string memName { get; set; }
-
+        
+        [Required]
         public string memLength { get; set; }
-
-       /* [ForeignKey("UserId")]
-        public int? UserId { get; set; }
-        public AppUser? AppUser { get; set; }
-       */
-
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
 

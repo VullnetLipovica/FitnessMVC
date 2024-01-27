@@ -7,10 +7,12 @@ namespace FitnessMVC.ViewModels
     {
         public int ExerciseId { get; set; }
 
-        
+        [Required]
+        [StringLength(255)]
         public string exName { get; set; }
 
-        
+        [Required]
+        [StringLength(255)]
         public string exDescription { get; set; }
 
        

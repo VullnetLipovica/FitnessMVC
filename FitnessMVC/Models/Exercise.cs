@@ -11,9 +11,11 @@ namespace FitnessMVC.Models
         [Key]
         public int ExerciseId { get; set; }
 
-
+        [Required]
+        [StringLength(255)]
         public string exName { get; set; }
 
+        [StringLength(1000)]
         public string exDescription { get; set; }
 
         public BodyParts BodyParts { get; set; }
